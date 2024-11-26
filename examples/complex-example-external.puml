@@ -1,0 +1,51 @@
+@startuml
+skinparam defaultTextAlignment center
+!$ICONURL = "https://raw.githubusercontent.com/JoobyPM/plantuml-icon-font-sprites/v3.0.0/icons"
+
+!include $ICONURL/common.puml
+!include $ICONURL/font-awesome-5/server.puml
+!include $ICONURL/font-awesome-6/gitlab.puml
+!include $ICONURL/font-awesome/gears.puml
+!include $ICONURL/font-awesome/fire.puml
+!include $ICONURL/font-awesome/clock_o.puml
+!include $ICONURL/font-awesome/lock.puml
+!include $ICONURL/font-awesome/cloud.puml
+
+!include $ICONURL/devicons/nginx.puml
+!include $ICONURL/devicons/mysql.puml
+!include $ICONURL/devicons/redis.puml
+!include $ICONURL/devicons2/docker.puml
+!include $ICONURL/devicons/linux.puml
+
+FA_CLOUD(internet,internet,cloud) #White {
+
+}
+
+DEV_LINUX(debian,Linux,node){
+
+	FA_CLOCK_O(crond,crond) #White
+	FA_FIRE(iptables,iptables) #White
+
+	DEV2_DOCKER(docker,docker,node)  {
+		DEV_NGINX(nginx,nginx,node) #White
+		DEV_MYSQL(mysql,mysql,node) #White
+		DEV_REDIS(redis,redis,node) #White
+		FA5_SERVER(nexus,nexus3,node) #White
+		FA6_GITLAB(gitlab,gitlab,node) #White
+		FA_GEARS(gitlabci,gitlab-ci-runner,node) #White
+
+		FA_LOCK(letsencrypt,letsencrypt-client,node) #White
+	}
+}
+
+internet ..> iptables : http
+
+iptables ..> nginx : http
+nginx ..> nexus : http
+nginx ..> gitlab : http
+gitlabci ..> gitlab : http
+gitlab ..> mysql : tcp/ip
+gitlab ..> redis : tcp/ip
+
+crond --> letsencrypt : starts every month
+@enduml
